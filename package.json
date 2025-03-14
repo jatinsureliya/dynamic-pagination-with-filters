@@ -1,0 +1,18 @@
+{
+  "name": "query-master",
+  "version": "1.0.0",
+  "description": "A powerful JavaScript class for fetching and managing paginated data",
+  "main": "query-master.js",
+  "keywords": [
+    "query-master",
+    "pagination",
+    "javascript",
+    "data-fetching"
+  ],
+  "author": "JackTech Sperrow",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jatinsureliya/query-master.git"
+  }
+}
