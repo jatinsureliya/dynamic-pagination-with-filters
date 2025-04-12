@@ -1,18 +1,22 @@
 {
-  "name": "query-master",
+  "name": "dynamic-pagination-with-filters",
   "version": "1.0.0",
-  "description": "A powerful JavaScript class for fetching and managing paginated data",
-  "main": "query-master.js",
-  "keywords": [
-    "query-master",
-    "pagination",
-    "javascript",
-    "data-fetching"
-  ],
-  "author": "JackTech Sperrow",
+  "description": "A lightweight JavaScript library for dynamic data loading and pagination.",
+  "main": "dynamic-pagination-with-filters.js",
+  "author": "Jatin Sureliya <jatinsureliya.dev@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jatinsureliya/query-master.git"
-  }
+    "url": "https://github.com/jatinsureliya/dynamic-pagination-with-filters.git"
+  },
+  "keywords": [
+    "pagination",
+    "data-loading",
+    "javascript",
+    "api"
+  ],
+  "bugs": {
+    "url": "https://github.com/jatinsureliya/dynamic-pagination-with-filters/issues"
+  },
+  "homepage": "https://github.com/jatinsureliya/dynamic-pagination-with-filters"
 }

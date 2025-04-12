@@ -1,4 +1,4 @@
-# QueryMaster
+# DynamicPaginationWithFilters
 
 A lightweight JavaScript utility for handling paginated data requests and UI updates with minimal configuration.
 
@@ -16,7 +16,7 @@ A lightweight JavaScript utility for handling paginated data requests and UI upd
 ### CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/jatinsureliya/query-master@latest/query-master.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/jatinsureliya/dynamic-pagination-with-filters@latest/dynamic-pagination-with-filters.js"></script>
 ```
 
 ### npm
@@ -31,7 +31,7 @@ A lightweight JavaScript utility for handling paginated data requests and UI upd
 
 1. Include the script in your HTML
 2. Set up your HTML container structure
-3. Initialize QueryMaster with your configuration
+3. Initialize DynamicPaginationWithFilters with your configuration
 
 ```html
 <div id="data-container">
@@ -42,14 +42,14 @@ A lightweight JavaScript utility for handling paginated data requests and UI upd
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const queryMaster = new QueryMaster({
-      apiBaseUrl: '/api/your-endpoint',
+  document.addEventListener("DOMContentLoaded", function () {
+    const filteredPager = new DynamicPaginationWithFilters({
+      apiBaseUrl: "/api/your-endpoint",
       // Additional configuration options as needed
     });
-    
+
     // Trigger initial data load
-    queryMaster.loadData();
+    filteredPager.loadData();
   });
 </script>
 ```
@@ -57,27 +57,27 @@ A lightweight JavaScript utility for handling paginated data requests and UI upd
 ### Configuration Options
 
 ```javascript
-const queryMaster = new QueryMaster({
+const filteredPager = new DynamicPaginationWithFilters({
   // Required
-  apiBaseUrl: '/api/your-endpoint',
-  
+  apiBaseUrl: "/api/your-endpoint",
+
   // Optional with defaults
-  dataContainerId: 'data-container',
-  dataWrapperId: 'data-wrapper',
-  paginationSectionClass: 'pagination-section',
+  dataContainerId: "data-container",
+  dataWrapperId: "data-wrapper",
+  paginationSectionClass: "pagination-section",
   scrollOffsetPixels: 100,
   requestFilters: {
     page: 1,
-    contentType: '',
-    sortOrder: '',
-    searchQuery: ''
-  }
+    contentType: "",
+    sortOrder: "",
+    searchQuery: "",
+  },
 });
 ```
 
 ### API Response Format
 
-QueryMaster expects the API to return a JSON object with the following structure:
+DynamicPaginationWithFilters expects the API to return a JSON object with the following structure:
 
 ```json
 {
@@ -92,19 +92,19 @@ You can update the data based on filters:
 
 ```javascript
 // Apply a single filter
-queryMaster.loadData({ page: 2 });
+filteredPager.loadData({ page: 2 });
 
 // Apply multiple filters
-queryMaster.loadData({
-  contentType: 'articles',
-  sortOrder: 'newest',
-  searchQuery: 'javascript'
+filteredPager.loadData({
+  contentType: "articles",
+  sortOrder: "newest",
+  searchQuery: "javascript",
 });
 
 // Alternative method
-queryMaster.setFilters({
-  contentType: 'articles',
-  sortOrder: 'newest'
+filteredPager.setFilters({
+  contentType: "articles",
+  sortOrder: "newest",
 });
 ```
 
@@ -124,22 +124,26 @@ Example with form controls:
   <option value="oldest">Oldest First</option>
 </select>
 
-<input type="text" id="search" placeholder="Search...">
+<input type="text" id="search" placeholder="Search..." />
 <button id="search-button">Search</button>
 
 <script>
-  document.getElementById('content-type').addEventListener('change', function() {
-    queryMaster.loadData({ contentType: this.value, page: 1 });
+  document
+    .getElementById("content-type")
+    .addEventListener("change", function () {
+      filteredPager.loadData({ contentType: this.value, page: 1 });
+    });
+
+  document.getElementById("sort-order").addEventListener("change", function () {
+    filteredPager.loadData({ sortOrder: this.value, page: 1 });
   });
-  
-  document.getElementById('sort-order').addEventListener('change', function() {
-    queryMaster.loadData({ sortOrder: this.value, page: 1 });
-  });
-  
-  document.getElementById('search-button').addEventListener('click', function() {
-    const searchQuery = document.getElementById('search').value;
-    queryMaster.loadData({ searchQuery: searchQuery, page: 1 });
-  });
+
+  document
+    .getElementById("search-button")
+    .addEventListener("click", function () {
+      const searchQuery = document.getElementById("search").value;
+      filteredPager.loadData({ searchQuery: searchQuery, page: 1 });
+    });
 </script>
 ```
 
@@ -167,23 +171,27 @@ Example with form controls:
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 ```
 
 ## Methods
 
-| Method | Description |
-|--------|-------------|
-| `loadData(filters)` | Fetch data with optional filters |
-| `setFilters(filters)` | Alternative method to set filters and load data |
-| `init()` | Initialize event listeners (called automatically) |
-| `buildUrl()` | Constructs the API URL with current filters |
-| `updateUI(response)` | Updates the DOM with the API response |
-| `smoothScrollToContainer()` | Scrolls to the data container |
-| `showLoading()` | Displays loading state |
-| `hideLoading()` | Removes loading state |
+| Method                      | Description                                       |
+| --------------------------- | ------------------------------------------------- |
+| `loadData(filters)`         | Fetch data with optional filters                  |
+| `setFilters(filters)`       | Alternative method to set filters and load data   |
+| `init()`                    | Initialize event listeners (called automatically) |
+| `buildUrl()`                | Constructs the API URL with current filters       |
+| `updateUI(response)`        | Updates the DOM with the API response             |
+| `smoothScrollToContainer()` | Scrolls to the data container                     |
+| `showLoading()`             | Displays loading state                            |
+| `hideLoading()`             | Removes loading state                             |
 
 ## Browser Compatibility
 
