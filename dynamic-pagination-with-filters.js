@@ -7,15 +7,26 @@
  * @see https://github.com/jatinsureliya/dynamic-pagination-with-filters
  * @description
  * DynamicPaginationWithFilters simplifies fetching and rendering paginated data from APIs with smooth scrolling
- * and browser history management. It provides a flexible configuration for filters and UI updates.
+ * and browser history management. It provides a flexible configuration for filters (including nested filters) and UI updates.
+ * Supports a custom callback for handling additional 'data' property in API responses.
  *
  * @example
  * const filteredPager = new DynamicPaginationWithFilters({
  *   apiBaseUrl: 'https://api.example.com/data',
  *   dataContainerId: 'data-container',
- *   dataWrapperId: 'data-wrapper'
+ *   dataWrapperId: 'data-wrapper',
+ *   dataCallback: (data) => {
+ *     console.log('Received data:', data);
+ *     document.getElementById('balance').textContent = data.balance;
+ *   }
  * });
- * filteredPager.loadData({ page: 1 });
+ * filteredPager.loadData({
+ *   page: 1,
+ *   date_filter: {
+ *     start: '2023-01-01',
+ *     end: '2023-12-31'
+ *   }
+ * });
  *
  * @copyright 2025 Jatin Sureliya
  * @repository https://github.com/jatinsureliya/dynamic-pagination-with-filters
@@ -34,6 +45,7 @@ class DynamicPaginationWithFilters {
       requestFilters: {
         page: 1,
       },
+      dataCallback: null,
       ...config,
     };
 
@@ -75,12 +87,25 @@ class DynamicPaginationWithFilters {
     const url = new URL(this.config.apiBaseUrl, window.location.origin);
     const filters = this.config.requestFilters;
 
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value && (key !== "page" || value !== 1)) {
-        url.searchParams.set(key, value);
-      }
-    });
+    // Helper function to append nested filters to URL
+    const appendQueryParams = (params, prefix = "") => {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value == null) return; // Skip null or undefined values
 
+        if (typeof value === "object" && !Array.isArray(value)) {
+          // Handle nested objects
+          appendQueryParams(value, prefix ? `${prefix}[${key}]` : key);
+        } else {
+          // Handle flat values
+          const paramKey = prefix ? `${prefix}[${key}]` : key;
+          if (value || (key === "page" && value === 1)) {
+            url.searchParams.set(paramKey, value);
+          }
+        }
+      });
+    };
+
+    appendQueryParams(filters);
     return url;
   }
 
@@ -117,6 +142,10 @@ class DynamicPaginationWithFilters {
       }
     } else if (paginationSection) {
       paginationSection.remove();
+    }
+
+    if (response.data && typeof this.config.dataCallback === "function") {
+      this.config.dataCallback(response.data);
     }
   }
 
